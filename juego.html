@@ -1,0 +1,45 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Miles Tails</title><link rel="stylesheet" href="style.css"></head><body class="jg"><div id="nav"></div><main>
+<h1 class="game-title">Defensa del taller</h1><p class="game-intro">Pilota el Tornado, dispara a los robots y protege el taller. Derriba 20 para ganar.</p>
+<div class="game-hud"><div><span>VIDA</span><div class="health-track" role="progressbar" aria-label="Vida" aria-valuemin="0" aria-valuemax="3" aria-valuenow="3"><i id="health"></i></div></div><p>ROBOTS: <b id="score">0</b> / 20</p></div>
+<div class="game-screen"><canvas id="game" aria-label="Juego de disparos. Usa las flechas o A y D para moverte y espacio para disparar."></canvas>
+<section class="game-overlay" id="gameOverlay"><div class="game-card"><p class="px">MISION DEL TALLER</p><h2 id="overlayTitle">Defiende el taller</h2><p id="overlayText">Esquiva los robots que descienden y derríbalos antes de que lleguen abajo.</p><button class="btn o" id="startGame">Empezar</button></div></section>
+</div>
+<div class="game-controls"><button class="btn control" id="left" aria-label="Mover a la izquierda">Izquierda</button><button class="btn control fire" id="fire">Disparar</button><button class="btn control" id="right" aria-label="Mover a la derecha">Derecha</button></div>
+<p class="game-help">Controles: flechas o A y D para moverte; espacio para disparar. En celular, usa los botones.</p>
+</main><footer>Cada invento empieza con una pregunta</footer><script src="app.js"></script>
+<script>
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d'),overlay=document.getElementById('gameOverlay');
+const target=20,keys=new Set(),touch={left:false,right:false,fire:false};
+let width=0,height=0,player={x:0,y:0},shots=[],robots=[],score=0,lives=3,active=false,last=0,lastShot=0,lastRobot=0,frame=0;
+function resize(){const box=canvas.getBoundingClientRect(),firstSize=width===0;width=box.width;height=box.height;canvas.width=width;canvas.height=height;if(player){player.x=firstSize?width/2:Math.min(width-24,Math.max(24,player.x));player.y=height-42}}
+addEventListener('resize',resize);resize();
+function updateHud(){document.getElementById('score').textContent=score;const bar=document.getElementById('health');bar.style.width=(lives/3*100)+'%';bar.parentElement.setAttribute('aria-valuenow',lives);bar.parentElement.classList.toggle('low',lives===1)}
+function start(){score=0;lives=3;shots=[];robots=[];player={x:width/2,y:height-42};last=performance.now();lastRobot=last;active=true;overlay.hidden=true;updateHud();requestAnimationFrame(loop)}
+function finish(won){active=false;overlay.hidden=false;document.getElementById('overlayTitle').textContent=won?'Taller a salvo':'Fin del juego';document.getElementById('overlayText').textContent=won?'Derribaste los 20 robots. Buen trabajo, piloto.':'Los robots alcanzaron el taller. Inténtalo otra vez.';document.getElementById('startGame').textContent=won?'Jugar otra vez':'Reintentar'}
+function shoot(now){if(now-lastShot<230)return;lastShot=now;shots.push({x:player.x,y:player.y-18})}
+function loop(now){if(!active)return;const dt=Math.min((now-last)/1000,.04);last=now;frame++;
+ if(keys.has('ArrowLeft')||keys.has('a')||keys.has('A')||touch.left)player.x-=280*dt;
+ if(keys.has('ArrowRight')||keys.has('d')||keys.has('D')||touch.right)player.x+=280*dt;
+ player.x=Math.max(20,Math.min(width-20,player.x));
+ if(keys.has(' ')||touch.fire)shoot(now);
+ if(now-lastRobot>820){robots.push({x:24+Math.random()*(width-48),y:-22,speed:72+Math.random()*48,phase:Math.random()*6});lastRobot=now}
+ for(const shot of shots)shot.y-=470*dt;
+ for(const robot of robots){robot.y+=robot.speed*dt;robot.x+=Math.sin(now/450+robot.phase)*24*dt}
+ shots=shots.filter(shot=>shot.y>-12);
+ for(let ri=robots.length-1;ri>=0;ri--){const robot=robots[ri];if(robot.y>height-28){robots.splice(ri,1);lives--;updateHud();if(lives<=0){finish(false);return}continue}
+ const hit=shots.findIndex(shot=>Math.hypot(shot.x-robot.x,shot.y-robot.y)<22);
+ if(hit!==-1){shots.splice(hit,1);robots.splice(ri,1);score++;document.getElementById('score').textContent=score;if(score>=target){finish(true);return}}
+ }
+ draw();requestAnimationFrame(loop)}
+function draw(){ctx.clearRect(0,0,width,height);ctx.fillStyle='rgba(255,255,255,.65)';for(let i=0;i<24;i++){const x=(i*97+frame*.18)%width,y=(i*67)%height;ctx.fillRect(x,y,2,2)}
+ for(const shot of shots){ctx.fillStyle='#fff6a6';ctx.fillRect(shot.x-3,shot.y-9,6,16);ctx.fillStyle='#ffa62b';ctx.fillRect(shot.x-1,shot.y-10,2,12)}
+ for(const robot of robots){ctx.fillStyle='#ed5264';ctx.strokeStyle='#421f49';ctx.lineWidth=3;ctx.beginPath();ctx.rect(robot.x-15,robot.y-13,30,26);ctx.fill();ctx.stroke();ctx.fillStyle='#fff';ctx.fillRect(robot.x-8,robot.y-5,5,5);ctx.fillRect(robot.x+3,robot.y-5,5,5);ctx.fillStyle='#421f49';ctx.fillRect(robot.x-4,robot.y+5,8,3)}
+ ctx.save();ctx.translate(player.x,player.y);ctx.fillStyle='#ffa62b';ctx.strokeStyle='#472c62';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(0,-20);ctx.lineTo(20,15);ctx.lineTo(0,9);ctx.lineTo(-20,15);ctx.closePath();ctx.fill();ctx.stroke();ctx.fillStyle='#4aa3ff';ctx.beginPath();ctx.arc(0,1,6,0,Math.PI*2);ctx.fill();ctx.restore()}
+document.getElementById('startGame').onclick=start;
+addEventListener('keydown',event=>{if(['ArrowLeft','ArrowRight',' '].includes(event.key))event.preventDefault();keys.add(event.key)});
+addEventListener('keyup',event=>keys.delete(event.key));
+function bindHold(id,key){const button=document.getElementById(id);button.addEventListener('pointerdown',event=>{event.preventDefault();touch[key]=true;button.setPointerCapture(event.pointerId)});['pointerup','pointercancel','lostpointercapture'].forEach(name=>button.addEventListener(name,()=>touch[key]=false))}
+bindHold('left','left');bindHold('right','right');bindHold('fire','fire');
+canvas.addEventListener('pointerdown',()=>{if(active)shoot(performance.now())});
+updateHud();draw();
+</script></body></html>

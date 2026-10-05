@@ -1,0 +1,5 @@
+Abre la carpeta en VS Code y usa Live Server sobre index.html.
+Para GitHub Pages: sube todo el contenido y activa Settings > Pages > main > /(root).
+Las canciones de la playlist están en musica/. Para añadir otra, copia el MP3 allí y agrega su título, artista y ruta al arreglo L de playlist.html.
+Las fotografías usadas por el sitio están en assets/images/.
+Stats: edita la lista S en stats.html (Resistencia está en 20 provisional).

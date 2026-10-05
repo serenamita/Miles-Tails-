@@ -1,0 +1,10 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Miles Tails</title><link rel="stylesheet" href="style.css"></head><body class="datos"><div id="nav"></div><main>
+<aside class="side"><span class="tl"></span><h1>TAILS</h1></aside>
+<section class="pane"><div class="tabs"><button class="on" data-p="a">Datos básicos</button><button data-p="b">Datos físicos</button></div>
+<div class="pn on" id="a"><h2 style="font-size:2.2rem;margin-bottom:10px">Miles Prower</h2>
+<div class="row"><b>Nombre</b><span>Miles "Tails" Prower</span></div><div class="row"><b>Edad</b><span>8 años</span></div><div class="row"><b>Especie</b><span>Zorro de dos colas</span></div><div class="row"><b>Hermano mayor</b><span>Sonic</span></div><div class="row"><b>Mejor amiga</b><span>Amy, casi una hermana</span></div><div class="row"><b>Familia</b><span>Quienes consiguieron quedarse</span></div><div class="row"><b>Su especialidad</b><span>Máquinas, inventos y soluciones</span></div></div>
+<div class="pn" id="b"><h2 style="font-size:2.2rem;margin-bottom:10px">Por fuera</h2>
+<div class="row"><b>Pelaje</b><span>Naranja, con pecho y hocico claros</span></div><div class="row"><b>Colas</b><span>Dos, con las puntas blancas</span></div><div class="row"><b>Ojos</b><span>Azules y muy grandes</span></div><div class="row"><b>Aspecto</b><span>Infantil, aunque su resistencia es mayor de lo que parece</span></div><div class="row"><b>Vuelo</b><span>Gira las colas como una hélice</span></div></div>
+</section></main><footer>Cada invento empieza con una pregunta</footer><script src="app.js"></script>
+<script>document.querySelector('.side .tl .tails').src='assets/images/Tails%20icon.jpg';
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button,.pn').forEach(x=>x.classList.remove('on'));b.classList.add('on');document.getElementById(b.dataset.p).classList.add('on')})</script></body></html>

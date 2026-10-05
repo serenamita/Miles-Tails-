@@ -1,0 +1,24 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Miles Tails</title><link rel="stylesheet" href="style.css"></head><body class="pl"><div id="nav"></div><main><h1 style="font-size:3rem;margin-bottom:18px">Blog y playlist</h1><div class="blog">
+<section><div class="win post"><div class="t"><i></i><i></i>entrada nueva<span>hoy</span></div><div class="in"><h2>Notas del taller</h2><p>¡Ya casi termino mi nuevo invento! ¡A Amy le va a gustar muchísimo!</p></div></div>
+<div class="win post"><div class="t"><i></i><i></i>entrada<span>ayer</span></div><div class="in"><h2>Los relámpagos</h2><p>¿¡Yo tener miedo a los relámpagos!? ¡Jamás!</p></div></div></section>
+<aside class="win"><div class="t"><i></i><i></i>reproductor<span>PLAY</span></div><div class="in"><div class="vis" id="v"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div id="tr"></div><audio id="audio" controls preload="none" aria-label="Reproductor de música"></audio><p id="audioStatus" role="status" aria-live="polite"></p></div></aside>
+</div></main><footer>Cada invento empieza con una pregunta</footer><script src="app.js"></script>
+<script>
+const L=[
+["The Boy in the Bubble","Alec Benjamin","musica/the-boy-in-the-bubble.mp3"],
+["The Less I Know the Better","Tame Impala","musica/the-less-i-know-the-better.mp3"],
+["Run Rabbit","Mollie Elizabeth","musica/run-rabbit.mp3"]
+];
+const audio=document.getElementById('audio');
+const tracks=document.getElementById('tr'),visualizer=document.getElementById('v'),status=document.getElementById('audioStatus');
+tracks.innerHTML=L.map((song,index)=>'<button class="trk" type="button" data-k="'+index+'"><span class="play-mark" aria-hidden="true">▶</span><span><b>'+song[0]+'</b><br><small>'+song[1]+'</small></span></button>').join('');
+tracks.querySelectorAll('.trk').forEach(button=>button.onclick=()=>{
+ const song=L[Number(button.dataset.k)];
+ if(button.classList.contains('on')&&!audio.paused){audio.pause();visualizer.classList.remove('go');status.textContent='Reproducción pausada.';return}
+ tracks.querySelectorAll('.trk').forEach(track=>track.classList.remove('on'));
+ button.classList.add('on');audio.src=song[2];status.textContent='Cargando: '+song[0];
+ audio.play().then(()=>{visualizer.classList.add('go');status.textContent='Reproduciendo: '+song[0]}).catch(()=>{visualizer.classList.remove('go');status.textContent='No se pudo reproducir el archivo de audio.'});
+});
+audio.onended=()=>{visualizer.classList.remove('go');status.textContent='La canción terminó.'};
+audio.onerror=()=>{visualizer.classList.remove('go');status.textContent='No se pudo cargar el archivo de audio.'};
+</script></body></html>

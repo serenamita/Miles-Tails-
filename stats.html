@@ -1,0 +1,11 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Miles Tails</title><link rel="stylesheet" href="style.css"></head><body class="stats"><div id="nav"></div><main><h1>STATS</h1><div id="s"></div></main><footer>Cada invento empieza con una pregunta</footer><script src="app.js"></script>
+<script>
+// Edita aquí los valores y textos. Puedes agregar más stats.
+const S=[["Resistencia",20,"Tails aguanta más de lo que parece. Ha aprendido a seguir adelante aun cansado, asustado o agotado. Pero puede soportar demasiado precisamente porque no sabe cuándo detenerse: su cuerpo sigue funcionando, aunque eso no significa que sea saludable. Se exige hasta el límite, sacrificando sueño y descanso."],
+["Maestría",27,"Aquí es donde Tails sobresale. Entiende máquinas, crea inventos y encuentra soluciones con un nivel extraordinario para su edad. Sabe aplicar lo que conoce bajo presión y adaptarlo a lo inesperado. Su mayor ventaja es no conformarse cuando no sabe algo: pregunta, investiga, prueba y vuelve a intentarlo, aunque su perfeccionismo pueda frustrarlo."],
+["Dominio del Caos",10,"Es su capacidad más limitada. No se siente tan cómodo con el caos como con la tecnología, la ingeniería o el análisis. Puede entender fuerzas que escapan a su control, pero no las domina como a sus inventos. Para alguien que resuelve todo con lógica, lo impredecible es un reto, y aún le queda mucho por aprender."]];
+const box=document.getElementById('s');
+function run(){box.innerHTML=S.map(s=>`<div class="hud"><h2>${s[0]}<span class="n">0/30</span></h2><div class="bar">${'<i></i>'.repeat(30)}</div><p>${s[2]}</p></div>`).join('');
+document.querySelectorAll('.hud').forEach((e,k)=>{const bars=e.querySelectorAll('i'),n=e.querySelector('.n');let i=0;const t=setInterval(()=>{if(i>=S[k][1])return clearInterval(t);bars[i].classList.add('f');i++;n.textContent=i+'/30'},70+k*20)})}
+run();document.getElementById('re').onclick=run;
+</script></body></html>

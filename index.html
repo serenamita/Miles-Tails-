@@ -1,0 +1,16 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Miles Tails</title><link rel="stylesheet" href="style.css"></head><body class="home"><div id="nav"></div><main>
+<section class="hero"><div><p class="px">¡BIENVENIDOs!</p><h1>¡Hola! Soy Miles "Tails" Prower</h1><p style="margin:14px 0 20px">¡Hola!, bienvenido a mi casa, gracias por venir, lamento mucho el desorden, ¡estaba arreglando el avion!</p><a class="btn" href="juego.html">Jugar</a></div>
+<div class="scene" id="sc"><div class="sun"></div><span class="tl"></span></div></section>
+<p class="px explore-title">EXPLORA</p>
+<div class="cards">
+<a class="card" href="datos.html"><img src="assets/images/fineeeeeeee.jpg" alt="Foto de Tails"><span>Datos</span></a>
+<a class="card" href="psico.html"><img src="assets/images/FOX..jpg" alt="Foto de Tails"><span>Mente</span></a>
+<a class="card" href="stats.html"><img src="assets/images/fox.jpg" alt="Foto de Tails"><span>Stats</span></a>
+<a class="card" href="relaciones.html"><img src="assets/images/Miles.jpg" alt="Foto de Tails"><span>Familia</span></a>
+<a class="card" href="playlist.html"><img src="assets/images/TAILS Y AMY.jpg" alt="Foto de Tails y Amy"><span>Playlist</span></a>
+</div>
+</main><footer>Cada invento empieza con una pregunta</footer><script src="app.js"></script>
+<script>
+const T=["¿Y si le pongo otra hélice?","Ojalá Sonic vea esto.","No, todavía no es hora de dormir","Nunca es demasiado tarde para ayudar","DIOSES, ya no le den mas cafe a sonic","Hmm… creo que tengo un plan"];
+setInterval(()=>{const bubble=document.createElement('div');bubble.className='th';bubble.textContent=T[Math.random()*T.length|0];bubble.style.left=Math.random()*60+10+'%';document.getElementById('sc').append(bubble);setTimeout(()=>bubble.remove(),7000)},3000);
+</script></body></html>
